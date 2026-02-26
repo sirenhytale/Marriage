@@ -1,0 +1,154 @@
+package plugin.siren.Commands.Marry;
+
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.GameMode;
+import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.CommandManager;
+import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
+import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
+import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.console.ConsoleSender;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.inventory.Inventory;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import plugin.siren.Marriage;
+import plugin.siren.Systems.MarriageComponent;
+import plugin.siren.Systems.MarriageSettings;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.List;
+
+public class MarryPlayerCmd extends AbstractPlayerCommand {
+    public MarryPlayerCmd() {
+        super("player", "Allows the player to request to marry the user.");
+
+        if(Marriage.getConfig().get().ifCmdPermission()){
+            this.requirePermission("marriage.marry");
+            this.setPermissionGroup(GameMode.Creative);
+        }else{
+            this.setPermissionGroup(GameMode.Adventure);
+        }
+    }
+
+    RequiredArg<PlayerRef> msgMarryPlayerArg = this.withRequiredArg("Player Username", "Username of player you want to request to marry.", ArgTypes.PLAYER_REF);
+
+    @Override
+    protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        Player player = store.getComponent(ref, Player.getComponentType());
+
+        PlayerRef partnerPlayerRef = msgMarryPlayerArg.get(commandContext);
+
+        MarriageSettings marriageSettings = store.getComponent(ref, Marriage.get().getMarriageSettingsComponentType());
+
+        if(marriageSettings == null){
+            Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : MarryPlayerCmd");
+        }else {
+            if (marriageSettings.isMarried()) {
+                player.sendMessage(Message.raw("You're already married."));
+            } else {
+                boolean marriageAllowed = false;
+                if(Marriage.getConfig().get().ifRequireRing()){
+                    Inventory inventory = player.getInventory();
+                    ItemStack itemStack = inventory.getItemInHand();
+                    if(itemStack.getItemId().equalsIgnoreCase("marriage_ring")){
+                        marriageAllowed = true;
+                    }else{
+                        player.sendMessage(Message.raw("You need to hold a ring in your hand."));
+                    }
+                }else{
+                    marriageAllowed = true;
+                }
+
+                if(marriageAllowed) {
+                    if (partnerPlayerRef == null || !partnerPlayerRef.isValid()) {
+                        Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef reference : MarryPlayerCmd");
+                    } else {
+                        MarriageComponent partnerMarriage = store.getComponent(partnerPlayerRef.getReference(), Marriage.get().getMarriageComponentType());
+
+                        if (partnerMarriage == null) {
+                            Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Marriage Component : MarryPlayerCmd");
+                        } else {
+                            List<PlayerRef> requests = partnerMarriage.getRequestsList();
+
+                            boolean aRequest = false;
+
+                            if (requests.isEmpty()) {
+                                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " has no current requests");
+                            } else {
+                                for (PlayerRef plyRefs : requests) {
+                                    if (plyRefs == playerRef) {
+                                        if (!playerRef.getUsername().equalsIgnoreCase(partnerPlayerRef.getUsername())) {
+                                            aRequest = true;
+                                        }
+                                    }
+                                }
+                            }
+                            MarriageComponent marriage = store.getComponent(ref, Marriage.get().getMarriageComponentType());
+
+                            if (marriage == null) {
+                                Marriage.LOGGER.atInfo().log("Failed to get ref Marriage Component : MarryPlayerCmd");
+                            } else {
+                                marriage.addRequestToList(partnerPlayerRef);
+
+                                Player playerMarryComp = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
+                                if (aRequest) {
+                                    MarriageSettings partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), Marriage.get().getMarriageSettingsComponentType());
+
+                                    marriageSettings.setPartnerUUID(partnerPlayerRef.getUuid());
+                                    marriageSettings.setPartnerUsername(partnerPlayerRef.getUsername());
+                                    marriageSettings.setMarried(true);
+                                    marriage.clearRequestsList();
+
+                                    partnerMarriageSettings.setPartnerUUID(playerRef.getUuid());
+                                    partnerMarriageSettings.setPartnerUsername(playerRef.getUsername());
+                                    partnerMarriageSettings.setMarried(true);
+                                    partnerMarriage.clearRequestsList();
+
+                                    player.sendMessage(Message.raw("You have gotten married to " + partnerPlayerRef.getUsername() + "."));
+
+                                    playerMarryComp.sendMessage(Message.raw("You have gotten married to " + playerRef.getUsername() + "."));
+
+                                    //String consoleSayCommand = "say " + playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!";
+                                    //CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleSayCommand);
+                                    String marriageMessage = playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!";
+                                    List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
+                                    for(PlayerRef plyRef : onlinePlayers){
+                                        Player ply = store.getComponent(plyRef.getReference(), Player.getComponentType());
+
+                                        if(ply == null){
+                                            Marriage.LOGGER.atFine().log("Failed to get onlinePlayer plyRef Player Component : MarryPlayerCmd");
+                                        }else{
+                                            ply.sendMessage(Message.raw(marriageMessage).color(Color.PINK));
+                                        }
+                                    }
+
+                                    Marriage.LOGGER.atInfo().log(playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!");
+                                } else {
+                                    if (!playerRef.getUsername().equalsIgnoreCase(partnerPlayerRef.getUsername())) {
+                                        player.sendMessage(Message.raw("You sent a marriage request to " + partnerPlayerRef.getUsername() + "."));
+
+                                        playerMarryComp.sendMessage(Message.raw(playerRef.getUsername() + " has sent you a marriage request."));
+                                    } else {
+                                        player.sendMessage(Message.raw("You can't marry yourself."));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(Marriage.ifDebug()) {
+            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran marry player command.");
+        }
+    }
+}

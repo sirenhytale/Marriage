@@ -1,0 +1,21 @@
+{
+  "Group": "plugin.siren",
+  "Name": "Marriage",
+  "Version": "1.2.0",
+  "Description": "Allows two players to get Marriage",
+  "Authors": [
+    {
+      "Name": "Siren",
+      "Url": "https://discord.gg/aFqpr9GZrb"
+    }
+  ],
+  "Website": "https://www.curseforge.com/hytale/mods/marriage",
+  "ServerVersion": "2026.02.19-1a311a592",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "LoadBefore": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true,
+  "SubPlugins": [],
+  "Main": "plugin.siren.Marriage"
+}
