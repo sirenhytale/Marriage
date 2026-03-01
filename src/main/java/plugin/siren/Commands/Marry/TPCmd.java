@@ -43,22 +43,22 @@ public class TPCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : PartnerTPCmd, partner is probably offline");
-                    player.sendMessage(Message.raw("Your partner is currently offline."));
+                    player.sendMessage(Message.translation("server.commands.marry.tp.partnerOffline.player.msg"));
                 }else {
                     String consoleRunCommand = "tp " + playerRef.getUsername() + " " + partnerPlayerRef.getUsername();
                     CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleRunCommand);
 
-                    player.sendMessage(Message.raw("You teleported to your beloved!"));
+                    player.sendMessage(Message.translation("server.commands.marry.tp.player.msg"));
 
                     Player partnerPlayer = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
                     if(partnerPlayer == null){
                         Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef partnerPlayer Player Component : PartnerTPCmd");
                     }else{
-                        partnerPlayer.sendMessage(Message.raw("Your beloved teleported to you!"));
+                        partnerPlayer.sendMessage(Message.translation("server.commands.marry.tp.partner.msg"));
                     }
                 }
             }else{
-                player.sendMessage(Message.raw("You aren't married to anyone, so no one to teleport to."));
+                player.sendMessage(Message.translation("server.commands.marry.tp.unmarried"));
             }
         }
 

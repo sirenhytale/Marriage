@@ -6,7 +6,7 @@ import plugin.siren.Commands.Marry.*;
 
 public class MarryCmd extends AbstractCommandCollection {
     public MarryCmd(){
-        super("marry","Marry command line");
+        super("marry","server.commands.marry.desc");
 
         this.addSubCommand(new MarryPlayerCmd());
         this.addSubCommand(new PartnerCmd());

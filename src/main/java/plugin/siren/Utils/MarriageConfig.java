@@ -42,17 +42,47 @@ public class MarriageConfig {
             .add()
             .build();
 
-    private String Information = "Confused about what one of these statement do? Go to https://mermaids.dev/marriage/config/ or check out the Marriage page on the Curseforge website and scroll down to Config Extra Info.";
+    private String InformationDefault = "Confused about what one of these statement do? Go to https://mermaids.dev/marriage/config/ or check out the Marriage page on the Curseforge website and scroll down to Config Extra Info.";
+    private String Information = InformationDefault;
     private final int ConfigVersionDefault = 2;
     private int ConfigVersion = ConfigVersionDefault;
     private String PluginName = "Marriage";
     private String Version = Marriage.getVersion();
-    private String Website = "https://mermaids.dev/marriage/";
-    private String DownloadSite = "https://www.curseforge.com/hytale/mods/marriage";
+    private String WebsiteDefault = "https://mermaids.dev/marriage/";
+    private String Website = WebsiteDefault;
+    private String DownloadSiteDefault = "https://www.curseforge.com/hytale/mods/marriage";
+    private String DownloadSite = DownloadSiteDefault;
     private boolean RequireRing = false;
     private boolean CmdPermission = false;
 
     public MarriageConfig() {}
+
+    public boolean ifConfigUpdate(){
+        boolean configUpdated = false;
+
+        if(ConfigVersionDefault > ConfigVersion){
+            configUpdated = true;
+            ConfigVersion = ConfigVersionDefault;
+        }
+        if(!Version.equalsIgnoreCase(Marriage.getVersion())){
+            configUpdated = true;
+            Version = Marriage.getVersion();
+        }
+        if(!Information.equalsIgnoreCase(InformationDefault)){
+            configUpdated = true;
+            Information = InformationDefault;
+        }
+        if(!Website.equalsIgnoreCase(WebsiteDefault)){
+            configUpdated = true;
+            Website = WebsiteDefault;
+        }
+        if(!DownloadSite.equalsIgnoreCase(DownloadSiteDefault)){
+            configUpdated = true;
+            DownloadSite = DownloadSiteDefault;
+        }
+
+        return configUpdated;
+    }
 
     public int getConfigVersionDefault(){
         return this.ConfigVersionDefault;

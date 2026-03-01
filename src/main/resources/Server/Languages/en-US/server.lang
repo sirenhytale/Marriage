@@ -1,0 +1,43 @@
+# === commands ===
+
+commands.marriage.desc = Marriage Mod admin command line
+commands.marriage.requireRing.desc = Toggles to require users to hold a ring to get married.
+commands.marriage.requireRing.arg.boolean.desc = Boolean to toggle user to hold ring to get married.
+commands.marriage.requireRing.player.msg.enabled = You have enabled requiring Ring to get married.
+commands.marriage.requireRing.player.msg.disabled = You have disabled requiring Ring to get married.
+commands.marriage.requireRing.console.msg.enabled = {username} has enabled requiring ring to get married.
+commands.marriage.requireRing.console.msg.disabled = {username} has disabled requiring ring to get married.
+commands.marry.desc = Marry command line
+commands.marry.divorce.desc = Divorce your partner.
+commands.marry.divorce.unmarried = You're currently not married.
+commands.marry.divorce.confirmation = Confirm divorce by retyping command within 10 seconds.
+commands.marry.divorce.player.msg = You have been divorced from {partnerUsername}.
+commands.marry.divorce.console.alert = {usernameOne} and {usernameTwo} have gotten a Divorce!
+commands.marry.list.desc = View a list of all Online player married.
+commands.marry.list.married = {usernameOne} and {usernameTwo} are married.
+commands.marry.message.desc = Send a private message to your married partner.
+commands.marry.message.partnerOffline.player.msg = Your partner is currently offline.
+commands.marry.message.missingMsg.player.msg = Don't forget to include what message you want to send to your partner.
+commands.marry.message.sentMsg = Sent message to {partnerUsername}: {msg}
+commands.marry.message.unmarried = You aren't married to anyone, so no one to send the message to.
+commands.marry.partner.player.msg = You are married to {partnerUsername}.
+commands.marry.partner.player.msg.offline = You are married to {partnerUsername} and they are offline.
+commands.marry.partner.unmarried = You aren't married to anyone.
+commands.marry.player.desc = Allows the player to request to marry the user.
+commands.marry.player.arg.username.desc = Username of player you want to request to marry.
+commands.marry.player.alreadyMarried = You're already married.
+commands.marry.player.missingRing = You need to hold a ring in your hand.
+commands.marry.player.request.player.msg = You sent a marriage request to {username}.
+commands.marry.player.receiveRequest.player.msg = {username} has sent you a marriage request.
+commands.marry.player.self.player.msg = You can't marry yourself.
+commands.marry.player.marry.player.msg = You have gotten married to {partnerUsername}.
+commands.marry.player.console.alert = {usernameOne} and {usernameTwo} just got Married!
+commands.marry.tp.player.msg = You teleported to your beloved!
+commands.marry.tp.partner.msg = Your beloved teleported to you!
+commands.marry.tp.partnerOffline.player.msg = Your partner is currently offline.
+commands.marry.tp.unmarried = You aren't married to anyone, so no one to teleport to.
+
+# === items ===
+
+items.MarriageRing.name = Marriage Ring
+items.MarriageRing.description = A ring that may allow you to get married.

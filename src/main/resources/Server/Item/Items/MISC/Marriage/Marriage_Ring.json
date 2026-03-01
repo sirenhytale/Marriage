@@ -1,0 +1,50 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.MarriageRing.name",
+    "Description": "server.items.MarriageRing.description"
+  },
+  "Icon": "Icons/ItemsGenerated/MarriageRingIcon.png",
+  "IconProperties": {
+    "Scale": 0.82,
+    "Translation": [
+      -4.5,
+      -4.5
+    ],
+    "Rotation": [
+      12,
+      35,
+      12
+    ]
+  },
+  "PlayerAnimationsId": "Item",
+  "Model": "Items/Marriage/MarriageRing.blockymodel",
+  "Texture": "Items/Marriage/MarriageRingTexture.png",
+  "Recipe": {
+    "TimeSeconds": 1,
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Gold",
+        "Quantity": 3
+      },
+      {
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Workbench",
+        "Type": "Crafting",
+        "Categories": [
+          "Workbench_Tinkering"
+        ]
+      }
+    ]
+  },
+  "Quality": "Uncommon",
+  "Tags": {
+    "Family": [
+      "Marriage"
+    ]
+  }
+}

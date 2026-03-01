@@ -81,15 +81,7 @@ public class Marriage extends JavaPlugin {
 
         config.save();
         LOGGER.atInfo().log("Loaded config settings.");
-        boolean configUpdated = false;
-        if(config.get().getConfigVersionDefault() > config.get().getConfigVersion()){
-            configUpdated = true;
-            config.get().setConfigVersion(config.get().getConfigVersionDefault());
-        }
-        if(!config.get().getPluginVersion().equalsIgnoreCase(VERSION)){
-            configUpdated = true;
-            config.get().setPluginVersion(VERSION);
-        }
+        boolean configUpdated = config.get().ifConfigUpdate();
         if(configUpdated){
             config.save();
             LOGGER.atInfo().log("Updated config to latest version.");

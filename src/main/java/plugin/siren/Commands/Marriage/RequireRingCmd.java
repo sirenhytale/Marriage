@@ -17,12 +17,12 @@ import javax.annotation.Nonnull;
 
 public class RequireRingCmd extends AbstractPlayerCommand {
     public RequireRingCmd() {
-        super("requirering", "Toggles to require users to hold a ring to get married.");
+        super("requirering", "server.commands.marriage.requireRing.desc");
 
         this.requirePermission("marriage.admin.requirering");
     }
 
-    RequiredArg<Boolean> msgRequireRingArg = this.withRequiredArg("Require Ring", "Boolean to toggle user to hold ring to get married.", ArgTypes.BOOLEAN);
+    RequiredArg<Boolean> msgRequireRingArg = this.withRequiredArg("Require Ring", "server.commands.marriage.requireRing.arg.boolean.desc", ArgTypes.BOOLEAN);
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
@@ -33,14 +33,17 @@ public class RequireRingCmd extends AbstractPlayerCommand {
         Marriage.getConfig().get().setRequireRing(requireRing);
         Marriage.getConfig().save();
 
-        String toggledStr = "";
+        String playerTranslationId = "";
+        String consoleTranslationId = "";
         if (requireRing) {
-            toggledStr = "Enabled";
+            playerTranslationId = "server.commands.marriage.requireRing.player.msg.enabled";
+            consoleTranslationId = "server.commands.marriage.requireRing.console.msg.enabled";
         } else {
-            toggledStr = "Disabled";
+            playerTranslationId = "server.commands.marriage.requireRing.player.msg.disabled";
+            consoleTranslationId = "server.commands.marriage.requireRing.console.msg.disabled";
         }
-        player.sendMessage(Message.raw("You have " + toggledStr + " requiring Ring to get married."));
+        player.sendMessage(Message.translation(playerTranslationId));
 
-        Marriage.LOGGER.atInfo().log(player.getDisplayName() + " has toggled required ring: " + String.valueOf(requireRing) + ".");
+        Marriage.LOGGER.atInfo().log(Message.translation(consoleTranslationId).param("username",player.getDisplayName()).toString());
     }
 }

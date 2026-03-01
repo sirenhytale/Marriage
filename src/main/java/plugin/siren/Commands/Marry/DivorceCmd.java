@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DivorceCmd extends AbstractPlayerCommand {
     public DivorceCmd() {
-        super("divorce", "Divorce your partner.");
+        super("divorce", "server.commands.marry.divorce.desc");
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.divorce");
@@ -69,18 +69,18 @@ public class DivorceCmd extends AbstractPlayerCommand {
                             marriageSettings.clearPartnerUUID();
                             marriageSettings.setPartnerUsername("");
 
-                            player.sendMessage(Message.raw("You have been divorced from " + partnerPlayerRef.getUsername() + "."));
+                            player.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
 
                             Player partnerPlayer = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
                             if (partnerPlayer == null) {
                                 Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Player Component : DivorceCmd");
                             } else {
-                                partnerPlayer.sendMessage(Message.raw("You have been divorced from " + playerRef.getUsername() + "."));
+                                partnerPlayer.sendMessage(Message.translation("server.commands.marry.divorce.player.msg").param("partnerUsername",playerRef.getUsername()));
                             }
 
                             //String consoleSayCommand = "say " + playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " have gotten a Divorce!";
                             //CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleSayCommand);
-                            String divorceMessage = playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " have gotten a Divorce!";
+                            Message divorceMessage = Message.translation("server.commands.marry.divorce.console.alert").param("usernameOne", playerRef.getUsername()).param("usernameTwo", partnerPlayerRef.getUsername());
                             List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
                             for(PlayerRef plyRef : onlinePlayers){
                                 Player ply = store.getComponent(plyRef.getReference(), Player.getComponentType());
@@ -88,7 +88,7 @@ public class DivorceCmd extends AbstractPlayerCommand {
                                 if(ply == null){
                                     Marriage.LOGGER.atFine().log("Failed to get onlinePlayer plyRef Player Component : MarryPlayerCmd");
                                 }else{
-                                    ply.sendMessage(Message.raw(divorceMessage));
+                                    ply.sendMessage(divorceMessage);
                                 }
                             }
 
@@ -106,7 +106,7 @@ public class DivorceCmd extends AbstractPlayerCommand {
                     }
                 }
             }else{
-                player.sendMessage(Message.raw("You're currently not married."));
+                player.sendMessage(Message.translation("server.commands.marry.divorce.unmarried"));
             }
         }
 

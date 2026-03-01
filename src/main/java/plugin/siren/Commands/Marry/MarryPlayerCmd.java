@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MarryPlayerCmd extends AbstractPlayerCommand {
     public MarryPlayerCmd() {
-        super("player", "Allows the player to request to marry the user.");
+        super("player", "server.commands.marry.player.desc");
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.marry");
@@ -38,7 +38,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
         }
     }
 
-    RequiredArg<PlayerRef> msgMarryPlayerArg = this.withRequiredArg("Player Username", "Username of player you want to request to marry.", ArgTypes.PLAYER_REF);
+    RequiredArg<PlayerRef> msgMarryPlayerArg = this.withRequiredArg("Player Username", "server.commands.marry.player.arg.username.desc", ArgTypes.PLAYER_REF);
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
@@ -52,16 +52,16 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
             Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : MarryPlayerCmd");
         }else {
             if (marriageSettings.isMarried()) {
-                player.sendMessage(Message.raw("You're already married."));
+                player.sendMessage(Message.translation("server.commands.marry.player.alreadyMarried"));
             } else {
                 boolean marriageAllowed = false;
                 if(Marriage.getConfig().get().ifRequireRing()){
                     Inventory inventory = player.getInventory();
                     ItemStack itemStack = inventory.getItemInHand();
-                    if(itemStack.getItemId().equalsIgnoreCase("marriage_ring")){
+                    if(itemStack != null && itemStack.getItemId().equalsIgnoreCase("marriage_ring")){
                         marriageAllowed = true;
                     }else{
-                        player.sendMessage(Message.raw("You need to hold a ring in your hand."));
+                        player.sendMessage(Message.translation("server.commands.marry.player.missingRing"));
                     }
                 }else{
                     marriageAllowed = true;
@@ -112,13 +112,12 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                                     partnerMarriageSettings.setMarried(true);
                                     partnerMarriage.clearRequestsList();
 
-                                    player.sendMessage(Message.raw("You have gotten married to " + partnerPlayerRef.getUsername() + "."));
+                                    player.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",partnerPlayerRef.getUsername()));
 
-                                    playerMarryComp.sendMessage(Message.raw("You have gotten married to " + playerRef.getUsername() + "."));
+                                    playerMarryComp.sendMessage(Message.translation("server.commands.marry.player.marry.player.msg").param("partnerUsername",playerRef.getUsername()));
 
-                                    //String consoleSayCommand = "say " + playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!";
-                                    //CommandManager.get().handleCommand(ConsoleSender.INSTANCE, consoleSayCommand);
-                                    String marriageMessage = playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!";
+
+                                    Message marriageMessage = Message.translation("server.commands.marry.player.console.alert").param("usernameOne", playerRef.getUsername()).param("usernameTwo", partnerPlayerRef.getUsername());
                                     List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
                                     for(PlayerRef plyRef : onlinePlayers){
                                         Player ply = store.getComponent(plyRef.getReference(), Player.getComponentType());
@@ -126,18 +125,18 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                                         if(ply == null){
                                             Marriage.LOGGER.atFine().log("Failed to get onlinePlayer plyRef Player Component : MarryPlayerCmd");
                                         }else{
-                                            ply.sendMessage(Message.raw(marriageMessage).color(Color.PINK));
+                                            ply.sendMessage(marriageMessage.color(Color.PINK));
                                         }
                                     }
 
                                     Marriage.LOGGER.atInfo().log(playerRef.getUsername() + " and " + partnerPlayerRef.getUsername() + " just got Married!");
                                 } else {
                                     if (!playerRef.getUsername().equalsIgnoreCase(partnerPlayerRef.getUsername())) {
-                                        player.sendMessage(Message.raw("You sent a marriage request to " + partnerPlayerRef.getUsername() + "."));
+                                        player.sendMessage(Message.translation("server.commands.marry.player.request.player.msg").param("username",partnerPlayerRef.getUsername()));
 
-                                        playerMarryComp.sendMessage(Message.raw(playerRef.getUsername() + " has sent you a marriage request."));
+                                        playerMarryComp.sendMessage(Message.translation("server.commands.marry.player.receiveRequest.player.msg").param("username",partnerPlayerRef.getUsername()));
                                     } else {
-                                        player.sendMessage(Message.raw("You can't marry yourself."));
+                                        player.sendMessage(Message.translation("server.commands.marry.player.self.player.msg"));
                                     }
                                 }
                             }

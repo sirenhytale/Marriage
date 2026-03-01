@@ -21,7 +21,7 @@ import java.awt.*;
 
 public class MessageCmd extends AbstractPlayerCommand {
     public MessageCmd() {
-        super("msg", "Send a private message to your married partner.");
+        super("msg", "server.commands.marry.message.desc");
 
         if(Marriage.getConfig().get().ifCmdPermission()){
             this.requirePermission("marriage.msg");
@@ -46,12 +46,12 @@ public class MessageCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : MessageCmd");
-                    player.sendMessage(Message.raw("Your partner is currently offline."));
+                    player.sendMessage(Message.translation("server.commands.marry.message.partnerOffline.player.msg"));
                 }else {
                     String msg = commandContext.getInputString();
 
                     if(msg.length() < 10){
-                        player.sendMessage(Message.raw("Don't forget to include what message you want to send to your partner"));
+                        player.sendMessage(Message.translation("server.commands.marry.message.missingMsg.player.msg"));
                     }else{
                         msg = msg.substring(10);
 
@@ -60,12 +60,12 @@ public class MessageCmd extends AbstractPlayerCommand {
                             Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Player Component : MessageCmd");
                         }else{
                             partnerPlayerComp.sendMessage(Message.raw(playerRef.getUsername() + ": " + msg).color(Color.PINK));
-                            player.sendMessage(Message.raw("Sent message to " + partnerPlayerRef.getUsername() + ": " + msg));
+                            player.sendMessage(Message.translation("server.commands.marry.message.sentMsg").param("partnerUsername",partnerPlayerRef.getUsername()).param("msg",msg));
                         }
                     }
                 }
             }else{
-                player.sendMessage(Message.raw("You aren't married to anyone, so no one to send the message to."));
+                player.sendMessage(Message.translation("server.commands.marry.message.unmarried"));
             }
         }
 

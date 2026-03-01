@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MarriedListCmd extends AbstractPlayerCommand {
     public MarriedListCmd() {
-        super("list", "View a list of all Online player married.");
+        super("list", "server.commands.marry.list.desc");
 
         this.setPermissionGroup(GameMode.Adventure);
     }
@@ -80,7 +80,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
                         if(marriedPlayerPartner == null){
                             Marriage.LOGGER.atInfo().log("Failed to get marriedPlayerPartner PlayerRef : MarriedListCmd");
                         }else{
-                            player.sendMessage(Message.raw(marrPlyRef.getUsername() + " and " + marriedPlayerPartner.getUsername() + " are married."));
+                            player.sendMessage(Message.translation("server.commands.marry.list.married").param("usernameOne", marrPlyRef.getUsername()).param("usernameTwo", marriedPlayerPartner.getUsername()));
                         }
                     }
 

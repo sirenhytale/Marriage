@@ -36,12 +36,12 @@ public class PartnerCmd extends AbstractPlayerCommand {
                 PlayerRef partnerPlayerRef = Universe.get().getPlayer(marriageSettings.getPartnerUUID());
                 if(partnerPlayerRef == null){
                     Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : PartnerCmd, partner is probably offline");
-                    player.sendMessage(Message.raw("You are married to " + marriageSettings.getPartnerUsername() + " and they are offline."));
+                    player.sendMessage(Message.translation("server.commands.marry.partner.player.msg.offline").param("partnerUsername", marriageSettings.getPartnerUsername()));
                 }else {
-                    player.sendMessage(Message.raw("You are married to " + partnerPlayerRef.getUsername() + "."));
+                    player.sendMessage(Message.translation("server.commands.marry.partner.player.msg").param("partnerUsername", partnerPlayerRef.getUsername()));
                 }
             }else{
-                player.sendMessage(Message.raw("You aren't married to anyone."));
+                player.sendMessage(Message.translation("server.commands.marry.partner.unmarried"));
             }
         }
 

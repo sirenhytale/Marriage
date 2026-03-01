@@ -6,7 +6,7 @@ import plugin.siren.Commands.Marriage.*;
 
 public class MarriageCmd extends AbstractCommandCollection {
     public MarriageCmd(){
-        super("marriage","Marriage mod command line");
+        super("marriage","server.commands.marriage.desc");
 
         this.addSubCommand(new RequireRingCmd());
 
