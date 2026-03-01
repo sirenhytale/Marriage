@@ -28,6 +28,10 @@ public class MarriageConfig {
                     (merConfig, wStr, extraInfo) -> merConfig.Website = wStr, // Setter
                     (merConfig, extraInfo) -> merConfig.Website)                    // Getter
             .add()
+            .append(new KeyedCodec<String>("Download-Site", Codec.STRING),
+                    (merConfig, dsStr, extraInfo) -> merConfig.DownloadSite = dsStr, // Setter
+                    (merConfig, extraInfo) -> merConfig.DownloadSite)                    // Getter
+            .add()
             .append(new KeyedCodec<Boolean>("Require-Ring-To-Marry", Codec.BOOLEAN),
                     (marConfig, rrtmBool, extraInfo) -> marConfig.RequireRing = rrtmBool, // Setter
                     (marConfig, extraInfo) -> marConfig.RequireRing)                    // Getter
@@ -38,12 +42,13 @@ public class MarriageConfig {
             .add()
             .build();
 
-    private String Information = "Confused about what one of these statement do? Check out the Marriage page on the Curseforge website and scroll down to Config Extra Info.";
+    private String Information = "Confused about what one of these statement do? Go to https://mermaids.dev/marriage/config/ or check out the Marriage page on the Curseforge website and scroll down to Config Extra Info.";
     private final int ConfigVersionDefault = 2;
     private int ConfigVersion = ConfigVersionDefault;
     private String PluginName = "Marriage";
     private String Version = Marriage.getVersion();
-    private String Website = "https://www.curseforge.com/hytale/mods/marriage";
+    private String Website = "https://mermaids.dev/marriage/";
+    private String DownloadSite = "https://www.curseforge.com/hytale/mods/marriage";
     private boolean RequireRing = false;
     private boolean CmdPermission = false;
 
