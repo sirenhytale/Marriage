@@ -28,15 +28,15 @@ public class PlayerReadyEventM {
 
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You now have the Marriage Component!"));
-                }
 
-                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " now has the Marriage Component.");
+                    Marriage.LOGGER.atInfo().log(player.getDisplayName() + " now has the Marriage Component.");
+                }
             }else{
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You already have the Marriage Component!"));
-                }
 
-                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " tried to receive Marriage Component but already has it.");
+                    Marriage.LOGGER.atInfo().log(player.getDisplayName() + " tried to receive Marriage Component but already has it.");
+                }
             }
 
             MarriageSettings marSett = store.getComponent(ref, Marriage.get().getMarriageSettingsComponentType());
@@ -47,15 +47,15 @@ public class PlayerReadyEventM {
 
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You now have the Marriage Settings Component!"));
-                }
 
-                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " now has the Marriage Settings Component.");
+                    Marriage.LOGGER.atInfo().log(player.getDisplayName() + " now has the Marriage Settings Component.");
+                }
             }else{
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You already have the Marriage Settings Component!"));
-                }
 
-                Marriage.LOGGER.atInfo().log(player.getDisplayName() + " tried to receive Marriage Settings Component but already has it.");
+                    Marriage.LOGGER.atInfo().log(player.getDisplayName() + " tried to receive Marriage Settings Component but already has it.");
+                }
             }
         });
     }
