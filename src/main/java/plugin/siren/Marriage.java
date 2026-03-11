@@ -20,7 +20,7 @@ import plugin.siren.Utils.MarriageConfig;
 import javax.annotation.Nonnull;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "1.2.0";
+    private static final String VERSION = "1.2.1";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;

@@ -70,7 +70,7 @@ public class MessageCmd extends AbstractPlayerCommand {
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran partner msg command.");
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.message.success").param("username",player.getDisplayName()).getAnsiMessage());
         }
     }
 }

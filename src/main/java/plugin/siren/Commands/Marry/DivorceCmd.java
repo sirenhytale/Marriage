@@ -95,7 +95,7 @@ public class DivorceCmd extends AbstractPlayerCommand {
                         } else {
                             marriage.setDivorceTimer(1);
 
-                            player.sendMessage(Message.raw("Confirm divorce by retyping command within 10 seconds."));
+                            player.sendMessage(Message.translation("server.commands.marry.divorce.confirmation"));
 
                             HytaleServer.SCHEDULED_EXECUTOR.schedule(() -> {
                                 world.execute(() -> {
@@ -111,7 +111,7 @@ public class DivorceCmd extends AbstractPlayerCommand {
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran divorce command.");
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.divorce.success").param("username",player.getDisplayName()).getAnsiMessage());
         }
     }
 }

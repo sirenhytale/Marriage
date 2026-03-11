@@ -147,7 +147,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran marry player command.");
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.player.success").param("username",player.getDisplayName()).getAnsiMessage());
         }
     }
 }

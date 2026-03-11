@@ -44,6 +44,6 @@ public class RequireRingCmd extends AbstractPlayerCommand {
         }
         player.sendMessage(Message.translation(playerTranslationId));
 
-        Marriage.LOGGER.atInfo().log(Message.translation(consoleTranslationId).param("username",player.getDisplayName()).toString());
+        Marriage.LOGGER.atInfo().log(Message.translation(consoleTranslationId).param("username",player.getDisplayName()).getAnsiMessage());
     }
 }

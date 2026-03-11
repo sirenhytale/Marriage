@@ -13,16 +13,20 @@ commands.marry.divorce.unmarried = You're currently not married.
 commands.marry.divorce.confirmation = Confirm divorce by retyping command within 10 seconds.
 commands.marry.divorce.player.msg = You have been divorced from {partnerUsername}.
 commands.marry.divorce.console.alert = {usernameOne} and {usernameTwo} have gotten a Divorce!
+commands.marry.divorce.success = {username} successfully ran divorce command.
 commands.marry.list.desc = View a list of all Online player married.
 commands.marry.list.married = {usernameOne} and {usernameTwo} are married.
+commands.marry.list.success = {username} successfully ran married list command.
 commands.marry.message.desc = Send a private message to your married partner.
 commands.marry.message.partnerOffline.player.msg = Your partner is currently offline.
 commands.marry.message.missingMsg.player.msg = Don't forget to include what message you want to send to your partner.
 commands.marry.message.sentMsg = Sent message to {partnerUsername}: {msg}
 commands.marry.message.unmarried = You aren't married to anyone, so no one to send the message to.
+commands.marry.message.success = {username} successfully ran marry message partner command.
 commands.marry.partner.player.msg = You are married to {partnerUsername}.
 commands.marry.partner.player.msg.offline = You are married to {partnerUsername} and they are offline.
 commands.marry.partner.unmarried = You aren't married to anyone.
+commands.marry.partner.success = {username} successfully ran marry partner command.
 commands.marry.player.desc = Allows the player to request to marry the user.
 commands.marry.player.arg.username.desc = Username of player you want to request to marry.
 commands.marry.player.alreadyMarried = You're already married.
@@ -32,10 +36,12 @@ commands.marry.player.receiveRequest.player.msg = {username} has sent you a marr
 commands.marry.player.self.player.msg = You can't marry yourself.
 commands.marry.player.marry.player.msg = You have gotten married to {partnerUsername}.
 commands.marry.player.console.alert = {usernameOne} and {usernameTwo} just got Married!
+commands.marry.player.success = {username} successfully ran marry player command.
 commands.marry.tp.player.msg = You teleported to your beloved!
 commands.marry.tp.partner.msg = Your beloved teleported to you!
 commands.marry.tp.partnerOffline.player.msg = Your partner is currently offline.
 commands.marry.tp.unmarried = You aren't married to anyone, so no one to teleport to.
+commands.marry.tp.success = {username} successfully ran partner tp command.
 
 # === items ===
 

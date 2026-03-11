@@ -88,7 +88,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
             }
         }
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran married list command.");
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.list.success").param("username",player.getDisplayName()).getAnsiMessage());
         }
     }
 }

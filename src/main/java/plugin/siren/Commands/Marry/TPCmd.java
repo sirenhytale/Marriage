@@ -63,7 +63,7 @@ public class TPCmd extends AbstractPlayerCommand {
         }
 
         if(Marriage.ifDebug()) {
-            Marriage.LOGGER.atInfo().log(player.getDisplayName() + " successfully ran partner tp command.");
+            Marriage.LOGGER.atInfo().log(Message.translation("server.commands.marry.tp.success").param("username",player.getDisplayName()).getAnsiMessage());
         }
     }
 }
