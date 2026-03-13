@@ -10,6 +10,9 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
 import plugin.siren.Systems.MarriageComponent;
 import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Utils.MarriageUpdateChecker;
+
+import java.awt.*;
 
 public class PlayerReadyEventM {
     public static void onPlayerReadyEvent(PlayerReadyEvent event){
@@ -55,6 +58,15 @@ public class PlayerReadyEventM {
                     player.sendMessage(Message.raw("You already have the Marriage Settings Component!"));
 
                     Marriage.LOGGER.atInfo().log(player.getDisplayName() + " tried to receive Marriage Settings Component but already has it.");
+                }
+            }
+
+            String recentVersion = MarriageUpdateChecker.checkForUpdate();
+            if(!Marriage.getVersion().equalsIgnoreCase(recentVersion)){
+                String versionMessage = "The Marriage Mod version is outdated, Marriage has released v" + recentVersion +".";
+                Marriage.LOGGER.atInfo().log(versionMessage);
+                if(player.hasPermission("*") && Marriage.getConfig().get().ifNewVersion()){
+                    player.sendMessage(Message.raw(versionMessage).color(Color.RED));
                 }
             }
         });

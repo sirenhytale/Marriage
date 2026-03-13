@@ -40,11 +40,15 @@ public class MarriageConfig {
                     (marConfig, upfcBool, extraInfo) -> marConfig.CmdPermission = upfcBool, // Setter
                     (marConfig, extraInfo) -> marConfig.CmdPermission)                    // Getter
             .add()
+            .append(new KeyedCodec<Boolean>("New-Version-Message", Codec.BOOLEAN),
+                    (merConfig, nvmBool, extraInfo) -> merConfig.NewVersion = nvmBool, // Setter
+                    (merConfig, extraInfo) -> merConfig.NewVersion)                    // Getter
+            .add()
             .build();
 
     private String InformationDefault = "Confused about what one of these statement do? Go to https://mermaids.dev/marriage/config/ or check out the Marriage page on the Curseforge website and scroll down to Config Extra Info.";
     private String Information = InformationDefault;
-    private final int ConfigVersionDefault = 2;
+    private final int ConfigVersionDefault = 3;
     private int ConfigVersion = ConfigVersionDefault;
     private String PluginName = "Marriage";
     private String Version = Marriage.getVersion();
@@ -54,6 +58,7 @@ public class MarriageConfig {
     private String DownloadSite = DownloadSiteDefault;
     private boolean RequireRing = false;
     private boolean CmdPermission = false;
+    private boolean NewVersion = true;
 
     public MarriageConfig() {}
 
@@ -114,5 +119,9 @@ public class MarriageConfig {
 
     public boolean ifCmdPermission(){
         return this.CmdPermission;
+    }
+
+    public boolean ifNewVersion(){
+        return NewVersion;
     }
 }

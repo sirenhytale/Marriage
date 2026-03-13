@@ -1,7 +1,7 @@
 {
-  "Group": "plugin.siren",
+  "Group": "Siren",
   "Name": "Marriage",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "Allows two players to get Marriage",
   "Authors": [
     {
