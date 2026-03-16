@@ -3,6 +3,8 @@ package plugin.siren;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -16,8 +18,11 @@ import plugin.siren.Systems.MarriageComponent;
 import plugin.siren.Systems.MarriageSettings;
 import plugin.siren.Utils.HStats;
 import plugin.siren.Utils.MarriageConfig;
+import plugin.siren.Utils.MarriageUpdateChecker;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 public class Marriage extends JavaPlugin {
     private static final String VERSION = "1.2.2";
@@ -88,9 +93,25 @@ public class Marriage extends JavaPlugin {
         }
 
         LOGGER.atInfo().log("Version " + VERSION + " of Marriage has successfully loaded.");
+
         if(ifDebug()){
             LOGGER.atInfo().log("= =- -=- -=- -=- -=- -=- -=- -=- -= =");
             LOGGER.atInfo().log("Loaded Marriage in Debug mode.");
+        }
+
+        String recentVersion = MarriageUpdateChecker.checkForUpdate();
+        if(!VERSION.equalsIgnoreCase(recentVersion)){
+            LOGGER.atInfo().log("= =- -=- -=- -=- -=- -=- -=- -=- -= =");
+            String versionMessage = "The Marriage Mod version is outdated, Marriage has released v" + recentVersion +".";
+            LOGGER.atInfo().log(versionMessage);
+
+            Runnable updateCheckRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    LOGGER.atInfo().log(versionMessage);
+                }
+            };
+            HytaleServer.SCHEDULED_EXECUTOR.schedule(updateCheckRunnable,15, TimeUnit.SECONDS);
         }
         LOGGER.atInfo().log("===---==---==---==---==---==---==---==---===");
     }
