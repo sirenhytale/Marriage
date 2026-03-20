@@ -3,16 +3,13 @@ package plugin.siren.Commands.Marry;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.GameMode;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.inventory.Inventory;
+import com.hypixel.hytale.server.core.inventory.InventoryComponent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -20,7 +17,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
 import plugin.siren.Systems.MarriageComponent;
-import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -46,7 +43,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
 
         PlayerRef partnerPlayerRef = msgMarryPlayerArg.get(commandContext);
 
-        MarriageSettings marriageSettings = store.getComponent(ref, Marriage.get().getMarriageSettingsComponentType());
+        MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
             Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : MarryPlayerCmd");
@@ -56,12 +53,14 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
             } else {
                 boolean marriageAllowed = false;
                 if(Marriage.getConfig().get().ifRequireRing()){
-                    Inventory inventory = player.getInventory();
-                    ItemStack itemStack = inventory.getItemInHand();
-                    if(itemStack != null && itemStack.getItemId().equalsIgnoreCase("marriage_ring")){
-                        marriageAllowed = true;
-                    }else{
-                        player.sendMessage(Message.translation("server.commands.marry.player.missingRing"));
+                    InventoryComponent.Hotbar hotbarComponent = store.getComponent(ref, InventoryComponent.Hotbar.getComponentType());
+                    if(hotbarComponent != null) {
+                        ItemStack itemInHand = hotbarComponent.getActiveItem();
+                        if (itemInHand != null && itemInHand.getItemId().equalsIgnoreCase("marriage_ring")) {
+                            marriageAllowed = true;
+                        } else {
+                            player.sendMessage(Message.translation("server.commands.marry.player.missingRing"));
+                        }
                     }
                 }else{
                     marriageAllowed = true;
@@ -71,7 +70,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                     if (partnerPlayerRef == null || !partnerPlayerRef.isValid()) {
                         Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef reference : MarryPlayerCmd");
                     } else {
-                        MarriageComponent partnerMarriage = store.getComponent(partnerPlayerRef.getReference(), Marriage.get().getMarriageComponentType());
+                        MarriageComponent partnerMarriage = store.getComponent(partnerPlayerRef.getReference(), MarriageComponent.getComponentType());
 
                         if (partnerMarriage == null) {
                             Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Marriage Component : MarryPlayerCmd");
@@ -91,7 +90,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
                                     }
                                 }
                             }
-                            MarriageComponent marriage = store.getComponent(ref, Marriage.get().getMarriageComponentType());
+                            MarriageComponent marriage = store.getComponent(ref, MarriageComponent.getComponentType());
 
                             if (marriage == null) {
                                 Marriage.LOGGER.atInfo().log("Failed to get ref Marriage Component : MarryPlayerCmd");
@@ -100,7 +99,7 @@ public class MarryPlayerCmd extends AbstractPlayerCommand {
 
                                 Player playerMarryComp = store.getComponent(partnerPlayerRef.getReference(), Player.getComponentType());
                                 if (aRequest) {
-                                    MarriageSettings partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), Marriage.get().getMarriageSettingsComponentType());
+                                    MarriageSettingsComponent partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), MarriageSettingsComponent.getComponentType());
 
                                     marriageSettings.setPartnerUUID(partnerPlayerRef.getUuid());
                                     marriageSettings.setPartnerUsername(partnerPlayerRef.getUsername());

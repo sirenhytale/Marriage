@@ -1,7 +1,7 @@
 {
   "Group": "Siren",
   "Name": "Marriage",
-  "Version": "1.2.2",
+  "Version": "1.2.3",
   "Description": "Allows two players to get Marriage",
   "Authors": [
     {
@@ -10,7 +10,7 @@
     }
   ],
   "Website": "https://mermaids.dev/marriage/",
-  "ServerVersion": "2026.02.19-1a311a592",
+  "ServerVersion": "2026.03.20-db226053c",
   "Dependencies": {},
   "OptionalDependencies": {},
   "LoadBefore": {},

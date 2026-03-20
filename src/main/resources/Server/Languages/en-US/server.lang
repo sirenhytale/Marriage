@@ -47,3 +47,7 @@ commands.marry.tp.success = {username} successfully ran partner tp command.
 
 items.MarriageRing.name = Marriage Ring
 items.MarriageRing.description = A ring that may allow you to get married.
+
+# === updateChecker ===
+
+updateChecker.marriage.release.message = The Marriage Mod version is outdated, Marriage has released v{version}.

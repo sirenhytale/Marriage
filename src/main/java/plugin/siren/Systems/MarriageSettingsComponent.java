@@ -4,14 +4,16 @@ import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import plugin.siren.Marriage;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class MarriageSettings implements Component<EntityStore> {
+public class MarriageSettingsComponent implements Component<EntityStore> {
 
-    public static final BuilderCodec<MarriageSettings> CODEC = BuilderCodec.builder(MarriageSettings.class, MarriageSettings::new)
+    public static final BuilderCodec<MarriageSettingsComponent> CODEC = BuilderCodec.builder(MarriageSettingsComponent.class, MarriageSettingsComponent::new)
             .append(new KeyedCodec<Boolean>("Married?", Codec.BOOLEAN),
                     (marSettings, mBool) -> marSettings.married = mBool, // Setter
                     (marSettings) -> marSettings.married)                    // Getter
@@ -30,13 +32,17 @@ public class MarriageSettings implements Component<EntityStore> {
     private UUID partnerUUID;
     private String partnerUsername;
 
-    public MarriageSettings(){
+    public static ComponentType<EntityStore, MarriageSettingsComponent> getComponentType(){
+        return Marriage.get().getMarriageSettingsComponentType();
+    }
+
+    public MarriageSettingsComponent(){
         this.married = false;
         this.partnerUUID = null;
         this.partnerUsername = "";
     }
 
-    public MarriageSettings(MarriageSettings other){
+    public MarriageSettingsComponent(MarriageSettingsComponent other){
         this.married = other.married;
         this.partnerUUID = other.partnerUUID;
         this.partnerUsername = other.partnerUsername;
@@ -45,7 +51,7 @@ public class MarriageSettings implements Component<EntityStore> {
     @Nullable
     @Override
     public Component<EntityStore> clone() {
-        return new MarriageSettings(this);
+        return new MarriageSettingsComponent(this);
     }
 
     public boolean isMarried(){

@@ -6,9 +6,7 @@ import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -16,10 +14,9 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
 import plugin.siren.Systems.MarriageComponent;
-import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,13 +36,13 @@ public class DivorceCmd extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         Player player = store.getComponent(ref, Player.getComponentType());
 
-        MarriageSettings marriageSettings = store.getComponent(ref, Marriage.get().getMarriageSettingsComponentType());
+        MarriageSettingsComponent marriageSettings = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
 
         if(marriageSettings == null){
             Marriage.LOGGER.atInfo().log("Failed to get Marriage Settings Component : DivorceCmd");
         }else{
             if(marriageSettings.isMarried()) {
-                MarriageComponent marriage = store.getComponent(ref, Marriage.get().getMarriageComponentType());
+                MarriageComponent marriage = store.getComponent(ref, MarriageComponent.getComponentType());
 
                 if (marriage == null) {
                     Marriage.LOGGER.atInfo().log("Failed to get Marriage Component : DivorceCmd");
@@ -56,7 +53,7 @@ public class DivorceCmd extends AbstractPlayerCommand {
                         Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef : DivorceCmd");
                     } else {
                         if (marriage.getDivorceTimer() >= 1) {
-                            MarriageSettings partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), Marriage.get().getMarriageSettingsComponentType());
+                            MarriageSettingsComponent partnerMarriageSettings = store.getComponent(partnerPlayerRef.getReference(), MarriageSettingsComponent.getComponentType());
                             if (partnerMarriageSettings == null) {
                                 Marriage.LOGGER.atInfo().log("Failed to get partnerPlayerRef Marriage Settings Component : DivorceCmd");
                             } else {

@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
-import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Systems.MarriageSettingsComponent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
         }else{
             List<PlayerRef> marriedList = new ArrayList<>();
             for(PlayerRef plyRef : onlinePlayers){
-                MarriageSettings marrSettings = store.getComponent(plyRef.getReference(), Marriage.get().getMarriageSettingsComponentType());
+                MarriageSettingsComponent marrSettings = store.getComponent(plyRef.getReference(), MarriageSettingsComponent.getComponentType());
 
                 if(marrSettings == null){
                     Marriage.LOGGER.atInfo().log("Failed to get marrSettings Marriage Settings Component : MarriedListCmd");
@@ -70,7 +70,7 @@ public class MarriedListCmd extends AbstractPlayerCommand {
                 player.sendMessage(Message.raw("No online players are currently married."));
             }else{
                 for(PlayerRef marrPlyRef : marriedList){
-                    MarriageSettings marrSettings = store.getComponent(marrPlyRef.getReference(), Marriage.get().getMarriageSettingsComponentType());
+                    MarriageSettingsComponent marrSettings = store.getComponent(marrPlyRef.getReference(), MarriageSettingsComponent.getComponentType());
 
                     if(marrSettings == null){
                         Marriage.LOGGER.atInfo().log("Failed to get marrSettings Marriage Settings Component : MarriedListCmd");

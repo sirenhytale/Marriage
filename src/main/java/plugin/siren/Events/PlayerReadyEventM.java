@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import plugin.siren.Marriage;
 import plugin.siren.Systems.MarriageComponent;
-import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Systems.MarriageSettingsComponent;
 import plugin.siren.Utils.MarriageUpdateChecker;
 
 import java.awt.*;
@@ -23,11 +23,11 @@ public class PlayerReadyEventM {
             Ref<EntityStore> ref = event.getPlayerRef();
             Store<EntityStore> store = ref.getStore();
 
-            MarriageComponent marComp = store.getComponent(ref, Marriage.get().getMarriageComponentType());
+            MarriageComponent marComp = store.getComponent(ref, MarriageComponent.getComponentType());
             if (marComp == null) {
                 MarriageComponent marriageComponent = new MarriageComponent();
 
-                store.putComponent(ref, Marriage.get().getMarriageComponentType(), marriageComponent);
+                store.putComponent(ref, MarriageComponent.getComponentType(), marriageComponent);
 
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You now have the Marriage Component!"));
@@ -42,11 +42,11 @@ public class PlayerReadyEventM {
                 }
             }
 
-            MarriageSettings marSett = store.getComponent(ref, Marriage.get().getMarriageSettingsComponentType());
+            MarriageSettingsComponent marSett = store.getComponent(ref, MarriageSettingsComponent.getComponentType());
             if (marSett == null) {
-                MarriageSettings marriageSettings = new MarriageSettings();
+                MarriageSettingsComponent marriageSettings = new MarriageSettingsComponent();
 
-                store.putComponent(ref, Marriage.get().getMarriageSettingsComponentType(), marriageSettings);
+                store.putComponent(ref, MarriageSettingsComponent.getComponentType(), marriageSettings);
 
                 if (Marriage.ifDebug()) {
                     player.sendMessage(Message.raw("You now have the Marriage Settings Component!"));
@@ -61,14 +61,7 @@ public class PlayerReadyEventM {
                 }
             }
 
-            String recentVersion = MarriageUpdateChecker.checkForUpdate();
-            if(!Marriage.getVersion().equalsIgnoreCase(recentVersion)){
-                String versionMessage = "The Marriage Mod version is outdated, Marriage has released v" + recentVersion +".";
-                Marriage.LOGGER.atInfo().log(versionMessage);
-                if(player.hasPermission("*") && Marriage.getConfig().get().ifNewVersion()){
-                    player.sendMessage(Message.raw(versionMessage).color(Color.RED));
-                }
-            }
+            MarriageUpdateChecker.sendUpdateMessage(player);
         });
     }
 }

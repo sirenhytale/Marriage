@@ -1,8 +1,10 @@
 package plugin.siren.Systems;
 
 import com.hypixel.hytale.component.Component;
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import plugin.siren.Marriage;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -12,6 +14,10 @@ public class MarriageComponent implements Component<EntityStore> {
 
     private List<PlayerRef> requestsList;
     private int divorceTimer;
+
+    public static ComponentType<EntityStore, MarriageComponent> getComponentType(){
+        return Marriage.get().getMarriageComponentType();
+    }
 
     public MarriageComponent(){
         requestsList = new ArrayList<>();

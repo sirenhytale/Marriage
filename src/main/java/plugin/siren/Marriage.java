@@ -4,7 +4,6 @@ import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistration;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.HytaleServer;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandRegistration;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -15,17 +14,16 @@ import plugin.siren.Commands.MarriageCmd;
 import plugin.siren.Commands.MarryCmd;
 import plugin.siren.Events.PlayerReadyEventM;
 import plugin.siren.Systems.MarriageComponent;
-import plugin.siren.Systems.MarriageSettings;
+import plugin.siren.Systems.MarriageSettingsComponent;
 import plugin.siren.Utils.HStats;
 import plugin.siren.Utils.MarriageConfig;
 import plugin.siren.Utils.MarriageUpdateChecker;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class Marriage extends JavaPlugin {
-    private static final String VERSION = "1.2.2";
+    private static final String VERSION = "1.2.3";
     private static final boolean DEBUG = false;
 
     private static Marriage plugin;
@@ -33,7 +31,7 @@ public class Marriage extends JavaPlugin {
     private final Config<MarriageConfig> config;
 
     private ComponentType<EntityStore, MarriageComponent> marriageComponent;
-    private ComponentType<EntityStore, MarriageSettings> marriageSettingsComponent;
+    private ComponentType<EntityStore, MarriageSettingsComponent> marriageSettingsComponent;
 
     public Marriage(@Nonnull JavaPluginInit init){
         super(init);
@@ -77,7 +75,7 @@ public class Marriage extends JavaPlugin {
             LOGGER.atInfo().log("Failed to register Marriage Component.");
         }
 
-        this.marriageSettingsComponent = this.getEntityStoreRegistry().registerComponent(MarriageSettings.class, "MarriageSettings", MarriageSettings.CODEC);
+        this.marriageSettingsComponent = this.getEntityStoreRegistry().registerComponent(MarriageSettingsComponent.class, "MarriageSettings", MarriageSettingsComponent.CODEC);
         if(this.marriageSettingsComponent != null) {
             LOGGER.atInfo().log("Registered Marriage Settings Component.");
         }else{
@@ -99,20 +97,8 @@ public class Marriage extends JavaPlugin {
             LOGGER.atInfo().log("Loaded Marriage in Debug mode.");
         }
 
-        String recentVersion = MarriageUpdateChecker.checkForUpdate();
-        if(!VERSION.equalsIgnoreCase(recentVersion)){
-            LOGGER.atInfo().log("= =- -=- -=- -=- -=- -=- -=- -=- -= =");
-            String versionMessage = "The Marriage Mod version is outdated, Marriage has released v" + recentVersion +".";
-            LOGGER.atInfo().log(versionMessage);
+        MarriageUpdateChecker.sendUpdateMessage(MarriageUpdateChecker.Type.StartUp);
 
-            Runnable updateCheckRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    LOGGER.atInfo().log(versionMessage);
-                }
-            };
-            HytaleServer.SCHEDULED_EXECUTOR.schedule(updateCheckRunnable,15, TimeUnit.SECONDS);
-        }
         LOGGER.atInfo().log("===---==---==---==---==---==---==---==---===");
     }
 
@@ -129,7 +115,7 @@ public class Marriage extends JavaPlugin {
         return marriageComponent;
     }
 
-    public ComponentType<EntityStore, MarriageSettings> getMarriageSettingsComponentType(){
+    public ComponentType<EntityStore, MarriageSettingsComponent> getMarriageSettingsComponentType(){
         return marriageSettingsComponent;
     }
 
